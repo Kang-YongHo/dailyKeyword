@@ -45,7 +45,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'search.apps',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',  # drf_yasg
     'rest_framework',  # djangorestframework
+    'search'
 
 ]
 
