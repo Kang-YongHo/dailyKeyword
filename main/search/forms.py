@@ -39,6 +39,7 @@ def trend(keyword):
     df = api.datalab_search(startDate, endDate, timeUnit, keywordGroups)
 
     print(df)
+    return df.transpose().to_html()
 
 
 class NameForm(forms.Form):

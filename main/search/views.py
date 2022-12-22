@@ -11,8 +11,8 @@ def get_name(request):
         # check whether it's valid:
         if form.is_valid():
             keyword = form.cleaned_data['your_name']
-            get_trend(keyword)
-            return render(request, 'search/index.html', {'form': form})
+            return HttpResponse(forms.trend(keyword))
+
 
 
 
@@ -21,10 +21,6 @@ def get_name(request):
         form = NameForm()
 
     return render(request, 'search/index.html', {'form': form})
-
-def get_trend(keyword):
-
-    return forms.trend(keyword)
 
 
 
