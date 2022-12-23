@@ -1,26 +1,37 @@
-from django.http import HttpResponse
+import io
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from main.search import forms
-from .forms import NameForm
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
 
-def get_name(request):
-    # if this is a POST request we need to process the form data
+from .serializers import SubjectSerializer
+from .forms import *
+
+
+def index(request):
+    return render(request, 'search/index.html')
+
+
+@api_view(['GET'])
+def get_api(request):
+    return None
+
+
+@api_view(['POST'])
+def post_api(request):
+    if request.method == 'GET':
+        return HttpResponse(status=200)
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            keyword = form.cleaned_data['your_name']
-            return HttpResponse(forms.trend(keyword))
+        stream = io.BytesIO(request.body)
+        data = JSONParser().parse(stream)
+        serializer = SubjectSerializer(data=data)
+        if serializer.is_valid():
+            print(serializer.validated_data['subject'])
+            result = get_json(serializer.validated_data['subject'])
 
+            return Response(result, status=200)
 
-
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = NameForm()
-
-    return render(request, 'search/index.html', {'form': form})
-
-
-
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

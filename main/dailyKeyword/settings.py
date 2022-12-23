@@ -34,6 +34,10 @@ pymysql.install_as_MySQLdb()
 '''
 4. SECEREY_KEY와 DEBUG에 넣은 값들을 불러올 수 있게 설정
 '''
+# 애플리케이션 인증 정보
+CLIENT_ID = env('CLIENT_ID')
+CLIENT_SECRET = env('CLIENT_SECRET')
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
