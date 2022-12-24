@@ -29,8 +29,9 @@ def process(keyword):
 
     # 실행
     df = api.datalab_search(startDate, endDate, timeUnit, keywordGroups)
+    df['예측'] = ""
 
-    return df.transpose()
+    return df
 def get_json(keyword):
     result = process(keyword).to_json(orient='records')
 
