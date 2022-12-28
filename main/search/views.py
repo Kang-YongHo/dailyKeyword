@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
-from .serializers import SubjectSerializer
+from .serializers import *
 from .forms import *
 
 
@@ -29,8 +29,8 @@ def post_api(request):
         data = JSONParser().parse(stream)
         serializer = SubjectSerializer(data=data)
         if serializer.is_valid():
-            print(serializer.validated_data['subject'])
-            result = get_json(serializer.validated_data['subject'])
+
+            result = find_keyword(serializer.validated_data['subject'])
 
             return Response(result, status=200)
 

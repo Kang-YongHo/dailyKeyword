@@ -16,17 +16,31 @@
             border: 1px solid #444444;
             padding: 10px;
         }
+
+        div {
+            float: left;
+            margin-right: 100px;
+        }
+
     </style>
 
 </head>
 <body>
 <script type="text/javascript">
+    let today = new Date();
+    let month = today.getMonth()+1;
+    let date = today.getDate()-1;
+
+
+
+
+
     function to_ajax() {
         let queryString = $("#subject").val();
         let data = {
             subject: queryString
         }
-        console.log(queryString);
+        console.log(data);
 
         $.ajax({
             url: '/post',
@@ -35,43 +49,8 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (result) {
-                let arrDate = [];
-                let arrSubject = [];
-                let arrExpect = [];
-                arrDate[0] = "날짜";
-                arrSubject[0] = queryString;
-                arrExpect[0] = "예측";
 
-                for (let i = 0; i < result.length; i++) {
-                    arrDate[i + 1] = result[i]["날짜"];
-                    arrSubject[i + 1] = result[i][queryString].toString();
-                    arrExpect[i + 1] = result[i]["예측"];
-                }
-
-                const table = document.createElement("table");
-
-                for (let i = 0; i < arrDate.length; i++) {
-
-                    let tr = document.createElement("tr");
-
-                    let td1 = document.createElement("td");
-                    td1.appendChild(document.createTextNode(arrDate[i] + " "));
-
-                    let td2 = document.createElement("td");
-                    td2.appendChild(document.createTextNode(arrSubject[i] + " "));
-
-                    let td3 = document.createElement("td");
-                    td3.appendChild(document.createTextNode(arrExpect[i] + " "));
-
-                    tr.appendChild(td1);
-                    tr.appendChild(td2);
-                    tr.appendChild(td3);
-
-                    table.appendChild(tr);
-
-                }
-
-                $("#div_id").append(table);
+                $("#div_id").append(result);
             },
             error: function (error) {
                 alert("Error!");
@@ -85,6 +64,7 @@
 <H2>검색어를 입력하세요</H2>
 <input type="text" id="subject" name="subject">
 <input type="button" onclick="to_ajax()" value="전송">
+
 <div id="div_id"></div>
 
 

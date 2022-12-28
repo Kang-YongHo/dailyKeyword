@@ -37,7 +37,8 @@ pymysql.install_as_MySQLdb()
 # 애플리케이션 인증 정보
 CLIENT_ID = env('CLIENT_ID')
 CLIENT_SECRET = env('CLIENT_SECRET')
-
+DB_USER = env('DB_USER')
+DB_PASS = env('DB_PASS')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
@@ -57,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',  # drf_yasg
     'rest_framework',  # djangorestframework
+    'peewee',
+    'sqlalchemy',
     'search'
 
 ]
