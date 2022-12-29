@@ -28,11 +28,14 @@ def post_api(request):
         stream = io.BytesIO(request.body)
         data = JSONParser().parse(stream)
         serializer = SubjectSerializer(data=data)
-        if serializer.is_valid():
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            result = find_keyword(serializer.validated_data['subject'])
-            print(result)
+        result = find_keyword(serializer.validated_data['subject'],
+                              serializer.validated_data['year'],
+                              serializer.validated_data['month'])
+        print(result)
 
-            return Response(result, status=200)
+        return Response(result, status=200)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

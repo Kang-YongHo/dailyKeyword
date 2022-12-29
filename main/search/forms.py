@@ -57,26 +57,28 @@ def process(keyword, keyword_id):
 
 
 # 검색어 테이블 조회 후 최신 한달 분 출력
-def find_keyword(subject):
+def find_keyword(subject, year, month):
     # keyword 테이블 조회
     try:
         keyword_id = Keyword.objects.get(name=subject).id
-        return get_data_from_db(keyword_id)
+        return get_data_from_db(keyword_id, year, month)
 
     except Keyword.DoesNotExist:
         Keyword.objects.create(name=subject)
         keyword_id = Keyword.objects.get(name=subject).id
         process(subject, keyword_id)
-        return get_data_from_db(keyword_id)
+        return get_data_from_db(keyword_id, year, month)
 
 
 # 키워드로 한달 분 가져오기
-def get_data_from_db(keyword_id):
-    today = date.today()
-    yearmonth = today.isoformat()
+def get_data_from_db(keyword_id, year, month):
+    get_month = str(month)
+    new_month = ""
+    if len(get_month) == 1:
+        new_month += "0"
 
-    print(yearmonth[0:7])
-    obj = Analysis.objects.filter(keyword_id=keyword_id, date__icontains=yearmonth[0:7]).values()
+    print(str(year)+"-"+new_month+get_month)
+    obj = Analysis.objects.filter(keyword_id=keyword_id, date__icontains=str(year)+"-"+new_month+get_month).values()
     df = pandas.DataFrame(obj, columns=['date', 'value', 'expect'])
     json_obj = json.loads(df.to_json())
 

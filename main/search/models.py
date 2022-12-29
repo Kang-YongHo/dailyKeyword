@@ -20,6 +20,9 @@ class Analysis(models.Model):
     expect = models.CharField(max_length=20)
 
 class InputData(models.Model):
+    year = models.IntegerField()
+    month = models.IntegerField()
     subject = models.CharField(max_length=20)
+
 
 

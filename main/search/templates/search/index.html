@@ -3,9 +3,19 @@
 <meta charset="utf-8">
 <html>
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>검색어 키워드 분석</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+
         table {
             width: 100%;
             border: 1px solid #444444;
@@ -17,42 +27,118 @@
             padding: 10px;
         }
 
-        div {
-            float: left;
-            margin-right: 100px;
+        #year {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
         }
+
+        #month {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+        }
+
+        [class*='selected_'] {
+            font-weight: bold;
+            color: red;
+        }
+
 
     </style>
 
 </head>
 <body>
-<script type="text/javascript">
+
+
+<H2>검색어를 입력하세요</H2>
+<input type="text" id="subject" name="subject">
+<input type="button" id="button" onclick="set_subject()" value="전송">
+<div id="filter_div"></div>
+<div id="table_div"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+<script>
     let today = new Date();
-    let month = today.getMonth() + 1;
-    let date = today.getDate() - 1;
+    let get_year = today.getFullYear();
+    let get_month = today.getMonth() + 1;
+    let get_date = today.getDate() - 1;
+    let queryString;
+    let month_id;
+    let year_id;
 
-    function make_filter(){
-        let div = document.createElement("div");
+    $(document).ready(function () {
+        make_filter()
+        for (let i = 0; i < 3; i++) {
+            let id = "year" + i;
+            $(document).on("click", "#" + id, function () {
+                event.preventDefault();
+                if (queryString === undefined) {
+                    alert("지정된 검색어 없음");
+                } else {
+                    document.querySelectorAll(".selected_year").forEach(el => el.classList.remove("selected_year"));
+                    document.getElementById(id).classList.toggle("selected_year");
+                    year_id = get_year - i;
+                    if (month_id !== undefined) {
+                        console.log("start");
+                        to_api(year_id, month_id, queryString);
+                    }
+
+
+                }
+            });
+        }
+
+        for (let i = 1; i < 13; i++) {
+            let id = "month" + i;
+            $(document).on("click", "#" + id, function () {
+                event.preventDefault();
+                if (queryString === undefined) {
+                    alert("지정된 검색어 없음");
+                } else {
+                    document.querySelectorAll(".selected_month").forEach(el => el.classList.remove("selected_month"));
+                    document.getElementById(id).classList.toggle("selected_month");
+                    month_id = i;
+                    if (year_id !== undefined) {
+                        console.log("start");
+                        to_api(year_id, month_id, queryString);
+                    }
+
+                }
+            });
+        }
+    });
+
+
+    function make_filter() {
         let div0 = document.createElement("div");
+        div0.id = 'year';
         let div1 = document.createElement("div");
-        for (let i = 0; i < 3; i++){
-            let years = document.createElement("p");
-            years.appendChild(document.createTextNode(today.getFullYear()-i+""));
-            div0.appendChild(years);
-        }
-        for (let i = 1; i < 13; i++){
-            let dates = document.createElement("p");
-            dates.appendChild(document.createTextNode(i+""));
-            div1.appendChild(dates);
-        }
-        div.appendChild(div0);
-        div.appendChild(div1);
+        div1.id = 'month';
 
-        return div;
+        for (let i = 0; i < 3; i++) {
+            let filter_year = document.createElement("a");
+            filter_year.appendChild(document.createTextNode(get_year - i + "년"));
+            filter_year.id = "year" + i + "";
+            div0.appendChild(filter_year);
+        }
+        for (let i = 1; i < 13; i++) {
+            let filter_month = document.createElement("a");
+            filter_month.appendChild(document.createTextNode(i + "월"));
+            filter_month.id = "month" + i + "";
+            div1.appendChild(filter_month);
+        }
+
+        $("#filter_div").append(div0);
+        $("#filter_div").append(div1);
 
     }
 
-    function json_toTable(json, queryString){
+    function to_table(json, queryString, caption) {
         let objValue = json['value'];
         let objLength = Object.keys(objValue).length;
         let arrDate = [];
@@ -62,10 +148,11 @@
         arrValue[0] = queryString;
         arrExpect[0] = "예측";
 
+
         console.log(Object.keys(objValue).length);
 
         for (let i = 0; i < objLength; i++) {
-            arrDate[i + 1] = json["date"][i];
+            arrDate[i + 1] = i + 1 + "";
             arrValue[i + 1] = json["value"][i].toString();
             arrExpect[i + 1] = json["expect"][i];
         }
@@ -81,7 +168,7 @@
             td0.appendChild(document.createTextNode(arrDate[i]));
 
             let td1 = document.createElement("td");
-            td1.appendChild(document.createTextNode(arrValue[i]+""));
+            td1.appendChild(document.createTextNode(arrValue[i] + ""));
 
             let td2 = document.createElement("td");
             td2.appendChild(document.createTextNode(arrExpect[i]));
@@ -92,6 +179,7 @@
 
         }
 
+        table.append(caption);
         table.appendChild(tr0);
         table.appendChild(tr1);
         table.appendChild(tr2);
@@ -99,18 +187,17 @@
         return table;
     }
 
-    function to_ajax() {
-        let queryString;
-        queryString = $('#subject').val();
-        if (queryString === "") {
-            alert("검색어 입력이 필요합니다.");
-            return
-        }
+    function to_api(year, month, subject) {
 
         let data = {
-            subject: queryString
+            subject: subject,
+            year: year,
+            month: month
+
         };
-        console.log(data);
+
+        let caption = document.createElement("p");
+        caption.appendChild(document.createTextNode(subject + " " + year.toString() + "." + month.toString()));
 
         $.ajax({
             url: '/post',
@@ -119,26 +206,36 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (result) {
-                let filter = make_filter();
-                let table = json_toTable(result, queryString);
-                $("#filter").append(filter);
-                $("#div_id").append(table);
+                let duplicate_table = document.querySelector("#"+subject);
+                if(duplicate_table != null){
+                    duplicate_table.remove();
+                }
+
+
+                let table = to_table(result, queryString, caption);
+                table.id = subject;
+                table.className = subject;
+                $("#table_div").append(table);
+
             },
             error: function () {
                 alert("Error!");
             }
 
         })
+    }
+
+    function set_subject() {
+        queryString = $('#subject').val();
+        if (queryString === "") {
+            alert("검색어 입력이 필요합니다.");
+            return
+        }
+        to_api(get_year, get_month, queryString);
+        $('#subject').val("");
 
     }
 </script>
-
-<H2>검색어를 입력하세요</H2>
-<input type="text" id="subject" name="subject">
-<input type="button" id="button" onclick="to_ajax()" value="전송">
-<div id="filter"></div>
-<div id="div_id"></div>
-
 
 </body>
 </html>
