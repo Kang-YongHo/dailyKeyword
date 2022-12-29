@@ -28,18 +28,88 @@
 <body>
 <script type="text/javascript">
     let today = new Date();
-    let month = today.getMonth()+1;
-    let date = today.getDate()-1;
+    let month = today.getMonth() + 1;
+    let date = today.getDate() - 1;
 
+    function make_filter(){
+        let div = document.createElement("div");
+        let div0 = document.createElement("div");
+        let div1 = document.createElement("div");
+        for (let i = 0; i < 3; i++){
+            let years = document.createElement("p");
+            years.appendChild(document.createTextNode(today.getFullYear()-i+""));
+            div0.appendChild(years);
+        }
+        for (let i = 1; i < 13; i++){
+            let dates = document.createElement("p");
+            dates.appendChild(document.createTextNode(i+""));
+            div1.appendChild(dates);
+        }
+        div.appendChild(div0);
+        div.appendChild(div1);
 
+        return div;
 
+    }
 
+    function json_toTable(json, queryString){
+        let objValue = json['value'];
+        let objLength = Object.keys(objValue).length;
+        let arrDate = [];
+        let arrValue = [];
+        let arrExpect = [];
+        arrDate[0] = "날짜";
+        arrValue[0] = queryString;
+        arrExpect[0] = "예측";
+
+        console.log(Object.keys(objValue).length);
+
+        for (let i = 0; i < objLength; i++) {
+            arrDate[i + 1] = json["date"][i];
+            arrValue[i + 1] = json["value"][i].toString();
+            arrExpect[i + 1] = json["expect"][i];
+        }
+
+        const table = document.createElement("table");
+
+        let tr0 = document.createElement("tr");
+        let tr1 = document.createElement("tr");
+        let tr2 = document.createElement("tr");
+
+        for (let i = 0; i < arrDate.length; i++) {
+            let td0 = document.createElement("td");
+            td0.appendChild(document.createTextNode(arrDate[i]));
+
+            let td1 = document.createElement("td");
+            td1.appendChild(document.createTextNode(arrValue[i]+""));
+
+            let td2 = document.createElement("td");
+            td2.appendChild(document.createTextNode(arrExpect[i]));
+
+            tr0.appendChild(td0);
+            tr1.appendChild(td1);
+            tr2.appendChild(td2);
+
+        }
+
+        table.appendChild(tr0);
+        table.appendChild(tr1);
+        table.appendChild(tr2);
+
+        return table;
+    }
 
     function to_ajax() {
-        let queryString = $("#subject").val();
+        let queryString;
+        queryString = $('#subject').val();
+        if (queryString === "") {
+            alert("검색어 입력이 필요합니다.");
+            return
+        }
+
         let data = {
             subject: queryString
-        }
+        };
         console.log(data);
 
         $.ajax({
@@ -49,10 +119,12 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (result) {
-
-                $("#div_id").append(result);
+                let filter = make_filter();
+                let table = json_toTable(result, queryString);
+                $("#filter").append(filter);
+                $("#div_id").append(table);
             },
-            error: function (error) {
+            error: function () {
                 alert("Error!");
             }
 
@@ -63,8 +135,8 @@
 
 <H2>검색어를 입력하세요</H2>
 <input type="text" id="subject" name="subject">
-<input type="button" onclick="to_ajax()" value="전송">
-
+<input type="button" id="button" onclick="to_ajax()" value="전송">
+<div id="filter"></div>
 <div id="div_id"></div>
 
 

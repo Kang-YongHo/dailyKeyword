@@ -77,6 +77,10 @@ def get_data_from_db(keyword_id):
 
     print(yearmonth[0:7])
     obj = Analysis.objects.filter(keyword_id=keyword_id, date__icontains=yearmonth[0:7]).values()
-    df = pandas.DataFrame(obj)
-    print(df.head(10))
-    return df.to_html()
+    df = pandas.DataFrame(obj, columns=['date', 'value', 'expect'])
+    json_obj = json.loads(df.to_json())
+
+    return json_obj
+
+
+

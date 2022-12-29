@@ -31,6 +31,7 @@ def post_api(request):
         if serializer.is_valid():
 
             result = find_keyword(serializer.validated_data['subject'])
+            print(result)
 
             return Response(result, status=200)
 
