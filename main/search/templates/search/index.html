@@ -1,19 +1,71 @@
 <!DOCTYPE html>
+<html lang="ko">
+<meta charset="utf-8">
 <html>
 <head>
-    <title>Single Page</title>
+    <title>검색어 키워드 분석</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border: 1px solid #444444;
+            border-collapse: collapse;
+        }
+
+        tr, td {
+            border: 1px solid #444444;
+            padding: 10px;
+        }
+
+        div {
+            float: left;
+            margin-right: 100px;
+        }
+
+    </style>
 
 </head>
 <body>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button class="btn btn-primary">제출</button>
-    </form>
+<script type="text/javascript">
+    let today = new Date();
+    let month = today.getMonth()+1;
+    let date = today.getDate()-1;
 
-    <div id="content">
 
-    </div>
+
+
+
+    function to_ajax() {
+        let queryString = $("#subject").val();
+        let data = {
+            subject: queryString
+        }
+        console.log(data);
+
+        $.ajax({
+            url: '/post',
+            data: JSON.stringify(data),
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (result) {
+
+                $("#div_id").append(result);
+            },
+            error: function (error) {
+                alert("Error!");
+            }
+
+        })
+
+    }
+</script>
+
+<H2>검색어를 입력하세요</H2>
+<input type="text" id="subject" name="subject">
+<input type="button" onclick="to_ajax()" value="전송">
+
+<div id="div_id"></div>
 
 
 </body>
