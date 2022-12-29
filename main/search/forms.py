@@ -23,7 +23,7 @@ db_pass = getattr(settings, 'DB_PASS', None)
 api = Naver(client_id, client_secret)
 
 # db 설정
-db = MySQLDatabase('test', user=db_user, password=db_pass,
+db = MySQLDatabase('daily_dev', user=db_user, password=db_pass,
                    host='127.0.0.1', port=3306)
 db_connection_str = 'mysql+pymysql://' + db_user + ':' + db_pass + '@127.0.0.1:3306/test'
 db_connection = create_engine(db_connection_str)
@@ -35,10 +35,10 @@ def process(keyword, keyword_id):
     today = dt.datetime.now()
     delta = today + relativedelta(years=-3)
     # 파라미터
-    startDate = delta.strftime("%Y-%m-%d")
-    endDate = today.strftime("%Y-%m-%d")
-    timeUnit = "date"
-    keywordGroups = [
+    start_date = delta.strftime("%Y-%m-%d")
+    end_date = today.strftime("%Y-%m-%d")
+    time_unit = "date"
+    keyword_groups = [
         {
             "groupName": keyword,
             "keywords": [keyword]
@@ -46,7 +46,7 @@ def process(keyword, keyword_id):
     ]
 
     # 실행
-    df = api.datalab_search(startDate, endDate, timeUnit, keywordGroups)
+    df = api.datalab_search(start_date, end_date, time_unit, keyword_groups)
     df.rename(columns={'날짜': 'date'}, inplace=True)
     df.rename(columns={keyword: 'value'}, inplace=True)
     df['keyword_id'] = keyword_id
