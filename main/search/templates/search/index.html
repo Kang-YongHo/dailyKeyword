@@ -53,7 +53,10 @@
 
 <H2>검색어를 입력하세요</H2>
 <input type="text" id="subject" name="subject">
-<input type="button" id="button" onclick="set_subject()" value="전송">
+<input type="button" id="button" onclick="add_subject()" value="전송">
+<div id="subject_div">
+    <h3> 지정된 검색어</h3>
+</div>
 <div id="filter_div"></div>
 <div id="table_div"></div>
 
@@ -66,48 +69,40 @@
     let today = new Date();
     let get_year = today.getFullYear();
     let get_month = today.getMonth() + 1;
-    let get_date = today.getDate() - 1;
-    let queryString;
+
+    let queryString = [];
     let month_id;
     let year_id;
 
     $(document).ready(function () {
-        make_filter()
+        console.log("docu ready");
+        make_filter();
+
         for (let i = 0; i < 3; i++) {
             let id = "year" + i;
-            $(document).on("click", "#" + id, function () {
-                event.preventDefault();
-                if (queryString === undefined) {
-                    alert("지정된 검색어 없음");
-                } else {
+            $(document).on("click",
+                "#" + id,
+                function () {
+                    event.preventDefault();
                     document.querySelectorAll(".selected_year").forEach(el => el.classList.remove("selected_year"));
                     document.getElementById(id).classList.toggle("selected_year");
                     year_id = get_year - i;
                     if (month_id !== undefined) {
-                        console.log("start");
-                        to_api(year_id, month_id, queryString);
+                        queryString.forEach(element => to_api(year_id, month_id, element));
                     }
 
-
-                }
-            });
+                });
         }
 
         for (let i = 1; i < 13; i++) {
             let id = "month" + i;
             $(document).on("click", "#" + id, function () {
                 event.preventDefault();
-                if (queryString === undefined) {
-                    alert("지정된 검색어 없음");
-                } else {
-                    document.querySelectorAll(".selected_month").forEach(el => el.classList.remove("selected_month"));
-                    document.getElementById(id).classList.toggle("selected_month");
-                    month_id = i;
-                    if (year_id !== undefined) {
-                        console.log("start");
-                        to_api(year_id, month_id, queryString);
-                    }
-
+                document.querySelectorAll(".selected_month").forEach(el => el.classList.remove("selected_month"));
+                document.getElementById(id).classList.toggle("selected_month");
+                month_id = i;
+                if (year_id !== undefined) {
+                    queryString.forEach(element => to_api(year_id, month_id, element));
                 }
             });
         }
@@ -138,18 +133,17 @@
 
     }
 
-    function to_table(json, queryString, caption) {
+    function to_table(json, subject) {
+
         let objValue = json['value'];
         let objLength = Object.keys(objValue).length;
         let arrDate = [];
         let arrValue = [];
         let arrExpect = [];
         arrDate[0] = "날짜";
-        arrValue[0] = queryString;
+        arrValue[0] = subject;
         arrExpect[0] = "예측";
 
-
-        console.log(Object.keys(objValue).length);
 
         for (let i = 0; i < objLength; i++) {
             arrDate[i + 1] = i + 1 + "";
@@ -179,7 +173,6 @@
 
         }
 
-        table.append(caption);
         table.appendChild(tr0);
         table.appendChild(tr1);
         table.appendChild(tr2);
@@ -188,16 +181,13 @@
     }
 
     function to_api(year, month, subject) {
-
+        $("#" + subject).empty();
         let data = {
             subject: subject,
             year: year,
             month: month
 
         };
-
-        let caption = document.createElement("p");
-        caption.appendChild(document.createTextNode(subject + " " + year.toString() + "." + month.toString()));
 
         $.ajax({
             url: '/post',
@@ -206,16 +196,10 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (result) {
-                let duplicate_table = document.querySelector("#"+subject);
-                if(duplicate_table != null){
-                    duplicate_table.remove();
-                }
-
-
-                let table = to_table(result, queryString, caption);
-                table.id = subject;
+                let table = to_table(result, subject);
+                table.id = "table_" + subject;
                 table.className = subject;
-                $("#table_div").append(table);
+                $("#" + subject).append(table);
 
             },
             error: function () {
@@ -223,16 +207,53 @@
             }
 
         })
+
     }
 
-    function set_subject() {
-        queryString = $('#subject').val();
-        if (queryString === "") {
-            alert("검색어 입력이 필요합니다.");
-            return
+    function add_subject() {
+        let str_subject = $('#subject').val();
+        $('#subject').val('');
+
+        if (str_subject === "") {
+            alert("검색어를 입력하세요");
+            return;
         }
-        to_api(get_year, get_month, queryString);
-        $('#subject').val("");
+
+        if (queryString.includes(str_subject) === true) {
+            return;
+        }
+
+        queryString.push(str_subject);
+        console.log(queryString.toString());
+        let subject_elem = document.createElement("p");
+        subject_elem.id = "subject_" + str_subject;
+        subject_elem.className = str_subject;
+        subject_elem.append(document.createTextNode(str_subject));
+
+        $("#subject_div").append(subject_elem);
+        let table_section = document.createElement("div");
+        table_section.id = str_subject;
+        $("#table_div").append(table_section);
+
+        if (year_id !== undefined && month_id !== undefined) {
+            to_api(get_year, get_month, str_subject);
+
+        }
+        $(document).on("click",
+            "#subject_" + str_subject,
+            function () {
+                $("#subject_" + str_subject).remove();
+                $("#" + str_subject).remove();
+                let temp = [];
+                for (let i = 0; i < queryString.length; i++) {
+                    if (queryString[i] !== str_subject) {
+                        temp.push(queryString[i]);
+                    }
+                }
+                queryString = temp;
+                console.log(temp.toString());
+
+            });
 
     }
 </script>
