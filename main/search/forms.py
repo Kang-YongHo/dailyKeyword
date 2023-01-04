@@ -1,17 +1,12 @@
-import datetime
 import datetime as dt
-from datetime import date, timedelta
 import json
 
 import pandas
-from sqlalchemy import create_engine
-import peewee
-from peewee import *
-
 from PyNaver import Naver
 from dateutil.relativedelta import relativedelta
-from django import forms
 from django.conf import settings
+from sqlalchemy import create_engine
+
 from .models import *
 
 # 애플리케이션 인증 정보
@@ -28,7 +23,6 @@ db = MySQLDatabase('daily_dev', user=db_user, password=db_pass,
 db_connection_str = 'mysql+pymysql://' + db_user + ':' + db_pass + '@127.0.0.1:3306/test'
 db_connection = create_engine(db_connection_str)
 conn = db_connection.connect()
-
 
 # 3년치 받아오기
 def process(keyword, keyword_id):
@@ -50,8 +44,6 @@ def process(keyword, keyword_id):
     df.rename(columns={'날짜': 'date'}, inplace=True)
     df.rename(columns={keyword: 'value'}, inplace=True)
     df['keyword_id'] = keyword_id
-    df['expect'] = ""
-    print(df.head(10))
     df.to_sql(name='search_analysis', con=db_connection
               , if_exists='append', index=False)
 
@@ -77,12 +69,21 @@ def get_data_from_db(keyword_id, year, month):
     if len(get_month) == 1:
         new_month += "0"
 
-    print(str(year)+"-"+new_month+get_month)
-    obj = Analysis.objects.filter(keyword_id=keyword_id, date__icontains=str(year)+"-"+new_month+get_month).values()
-    df = pandas.DataFrame(obj, columns=['date', 'value', 'expect'])
+    obj = Analysis.objects.filter(keyword_id=keyword_id,
+                                  date__icontains=str(year) + "-" + new_month + get_month).values()
+    df = pandas.DataFrame(obj, columns=['date', 'value'])
     json_obj = json.loads(df.to_json())
-
     return json_obj
+
+
+def db_update():
+    print("Now scheduler processing")
+    Analysis.objects.all().delete()
+    keywords_list = Keyword.objects.all()
+    for keyword in keywords_list.values():
+        process(keyword['name'], keyword['id'])
+    print("DB UPDATE DONE!")
+
 
 
 
