@@ -10,6 +10,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_20erp7jjos/croot/cryptography_1665612656373/work
 Django @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_cdse89o2w5/croots/recipe/django_1661292537238/work
+django-bootstrap5==22.2
 django-environ==0.9.0
 djangorestframework==3.14.0
 drf-yasg==1.21.4

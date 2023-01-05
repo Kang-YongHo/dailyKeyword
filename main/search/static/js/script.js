@@ -1,18 +1,17 @@
 let today = new Date();
 let get_year = today.getFullYear();
-let get_month = today.getMonth() + 1;
 
 let queryString = [];
 let month_id;
 let year_id;
 
-$(document).ready(function () {
+_$(function () {
     console.log("docu ready");
     make_filter();
 
     for (let i = 0; i < 3; i++) {
         let id = "year" + i;
-        $(document).on("click",
+        _$(document).on("click",
             "#" + id,
             function () {
                 event.preventDefault();
@@ -29,7 +28,7 @@ $(document).ready(function () {
 
     for (let i = 1; i < 13; i++) {
         let id = "month" + i;
-        $(document).on("click", "#" + id, function () {
+        _$(document).on("click", "#" + id, function () {
             event.preventDefault();
             console.log(i + "month filter selected");
             document.querySelectorAll(".selected_month").forEach(el => el.classList.remove("selected_month"));
@@ -62,8 +61,8 @@ function make_filter() {
         div1.appendChild(filter_month);
     }
 
-    $("#filter_div").append(div0);
-    $("#filter_div").append(div1);
+    _$("#filter_div").append(div0);
+    _$("#filter_div").append(div1);
 
 }
 
@@ -122,7 +121,7 @@ function to_table(json, subject) {
 }
 
 function to_api(year, month, subject) {
-    $("#" + subject).empty();
+    _$("#" + subject).empty();
     let data = {
         subject: subject,
         year: year,
@@ -130,7 +129,7 @@ function to_api(year, month, subject) {
 
     };
 
-    $.ajax({
+    _$.ajax({
         url: '/post',
         data: JSON.stringify(data),
         method: 'POST',
@@ -140,7 +139,7 @@ function to_api(year, month, subject) {
             let table = to_table(result, subject);
             table.id = "table_" + subject;
             table.className = subject;
-            $("#" + subject).append(table);
+            _$("#" + subject).append(table);
 
         },
         error: function () {
@@ -152,8 +151,8 @@ function to_api(year, month, subject) {
 }
 
 function add_subject() {
-    let str_subject = $('#subject').val();
-    $('#subject').val('');
+    let str_subject = _$('#subject').val();
+    _$('#subject').val('');
 
     if (str_subject === "") {
         alert("검색어를 입력하세요");
@@ -170,20 +169,20 @@ function add_subject() {
     subject_elem.className = str_subject;
     subject_elem.append(document.createTextNode(str_subject));
 
-    $("#subject_div").append(subject_elem);
+    _$("#subject_div").append(subject_elem);
     let table_section = document.createElement("div");
     table_section.id = str_subject;
-    $("#table_div").append(table_section);
+    _$("#table_div").append(table_section);
 
     if (year_id !== undefined && month_id !== undefined) {
         to_api(year_id, month_id, str_subject);
     }
 
-    $(document).on("click",
+    _$(document).on("click",
         "#subject_" + str_subject,
         function () {
-            $("#subject_" + str_subject).remove();
-            $("#" + str_subject).remove();
+            _$("#subject_" + str_subject).remove();
+            _$("#" + str_subject).remove();
             let temp = [];
             for (let i = 0; i < queryString.length; i++) {
                 if (queryString[i] !== str_subject) {
@@ -198,14 +197,49 @@ function add_subject() {
 }
 
 function db_update() {
-    $.ajax({
+    _$.ajax({
         url: '/update',
         method: 'GET'
     }).done(function () {
         alert("DB업데이트 요청완료!");
-    }).fail(function (){
+    }).fail(function () {
         alert("요청 실패!");
     })
 
 
 }
+
+/*!
+* Start Bootstrap - Scrolling Nav v5.0.5 (https://startbootstrap.com/template/scrolling-nav)
+* Copyright 2013-2022 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-scrolling-nav/blob/master/LICENSE)
+*/
+//
+// Scripts
+//
+
+window.addEventListener('DOMContentLoaded', event => {
+
+    // Activate Bootstrap scrollspy on the main nav element
+    const mainNav = document.body.querySelector('#mainNav');
+    if (mainNav) {
+        new bootstrap.ScrollSpy(document.body, {
+            target: '#mainNav',
+            offset: 74,
+        });
+    };
+
+    // Collapse responsive navbar when toggler is visible
+    const navbarToggler = document.body.querySelector('.navbar-toggler');
+    const responsiveNavItems = [].slice.call(
+        document.querySelectorAll('#navbarResponsive .nav-link')
+    );
+    responsiveNavItems.map(function (responsiveNavItem) {
+        responsiveNavItem.addEventListener('click', () => {
+            if (window.getComputedStyle(navbarToggler).display !== 'none') {
+                navbarToggler.click();
+            }
+        });
+    });
+
+});

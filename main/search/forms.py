@@ -77,7 +77,7 @@ def get_data_from_db(keyword_id, year, month):
 
 
 def db_update():
-    print("Now scheduler processing")
+    print("Requesting . . .")
     Analysis.objects.all().delete()
     keywords_list = Keyword.objects.all()
     for keyword in keywords_list.values():
