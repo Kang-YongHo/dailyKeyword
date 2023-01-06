@@ -43,25 +43,27 @@
 <header class="bg-primary bg-gradient text-white">
     <div class="container px-4 text-center">
         <h1 class="fw-bolder">검색어를 입력하세요</h1>
-        <input class="lead" type="text" id="subject" name="subject">
+        <input class="input_box" type="text" id="subject" name="subject">
         <input class="btn btn-lg btn-light" type="button" id="button" onclick="add_subject()" value="전송">
     </div>
 </header>
 
 <!-- SUBJECT SECTION-->
-<section id='subject'>
-    <div class="container px-4 text-center" >
-        <div class="row gx-4 justify-content-center" id="subject_div">
-        <h2 class="fw-bold">지정된 검색어</h2>
+<section class="bg-light" id='subject'>
+    <div class="container px-4 text-center">
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold">지정된 검색어</h2>
+                <div class="row gx-5 justify-content-start" id="subject_div" >
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 
-
-
 <!-- TABLE SECTION-->
-<section id='table'>
+<section class="bg-light" id='table'>
     <div class="container px-4">
         <div class="row gx-4 justify-content-center">
             <div class="col-lg-8">
@@ -83,7 +85,7 @@
                 <p class="lead"> 네이버 데이터랩 기반으로 ~~~~!</p>
                 <p class="lead"> 프로시저</p>
                 <ul>
-                    <li>데이터랩 API로 가져온 데이터를 DB에 저장합니다. </li>
+                    <li>데이터랩 API로 가져온 데이터를 DB에 저장합니다.</li>
                     <li>현재 DB에 있는 키워드인지 검사</li>
                     <li>DB에 저장된 정보를 분석엔진을 통해 전달</li>
                     <li>분석된 데이터를 표로 출력해 줍니다</li>
@@ -101,7 +103,7 @@
             <div class="col-lg-8">
                 <h2>DB 업데이트</h2>
                 <div class="lead">
-                    <button onclick="db_update()"> DB 최신화하기</button>
+                    <button class="btn btn-lg btn-dark btn-outline-light" onclick="db_update()"> DB 최신화하기</button>
                 </div>
             </div>
         </div>
@@ -130,7 +132,7 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 <!-- Core theme JS-->
-<script src="{% static 'js/script.js' %}"></script>
+<script src="{% static '/script.js' %}"></script>
 
 </body>
 </html>

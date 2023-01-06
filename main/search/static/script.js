@@ -153,6 +153,7 @@ function to_api(year, month, subject) {
 function add_subject() {
     let str_subject = _$('#subject').val();
     _$('#subject').val('');
+    str_subject = str_subject.replace(' ', '');
 
     if (str_subject === "") {
         alert("검색어를 입력하세요");
@@ -164,11 +165,26 @@ function add_subject() {
     }
 
     queryString.push(str_subject);
-    let subject_elem = document.createElement("p");
-    subject_elem.id = "subject_" + str_subject;
-    subject_elem.className = str_subject;
-    subject_elem.append(document.createTextNode(str_subject));
 
+
+    let subject_elem = document.createElement("div");
+    subject_elem.className = "col-3 col-md-3 col-md-offset-3";
+    subject_elem.id = "subject_" + str_subject;
+
+    let col_pad = document.createElement("div");
+    col_pad.className = "p-3"
+
+    let text = document.createElement("span");
+    text.append(document.createTextNode(str_subject));
+    col_pad.append(text);
+
+    let close_button = document.createElement("button");
+    close_button.type = "button";
+    close_button.className = "btn-close";
+    close_button.ariaLabel = "Close"
+    col_pad.append(close_button);
+
+    subject_elem.append(col_pad);
     _$("#subject_div").append(subject_elem);
     let table_section = document.createElement("div");
     table_section.id = str_subject;
@@ -227,7 +243,8 @@ window.addEventListener('DOMContentLoaded', event => {
             target: '#mainNav',
             offset: 74,
         });
-    };
+    }
+    ;
 
     // Collapse responsive navbar when toggler is visible
     const navbarToggler = document.body.querySelector('.navbar-toggler');
