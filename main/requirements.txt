@@ -1,35 +1,45 @@
-asgiref==3.5.2
-backports.zoneinfo==0.2.1
-certifi==2022.12.7
-charset-normalizer==2.1.1
-conda==4.3.16
+APScheduler==3.9.1.post1
+asgiref @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_63w24gebjz/croots/recipe/asgiref_1661287537348/work
+backports.zoneinfo @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_ce_j7dts93/croots/recipe/backports.zoneinfo_1661287536126/work
+Bottleneck @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_07078715-3ab7-4562-8d3d-d56b0eaa0f7dp504n_ny/croots/recipe/bottleneck_1657175566567/work
+brotlipy==0.7.0
+certifi @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_5d968ni_yn/croot/certifi_1671487774636/work/certifi
+cffi @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_ab19r4bji3/croot/cffi_1670423206034/work
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
 coreapi==2.3.3
 coreschema==0.0.4
-Django==4.1.4
+cryptography @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_20erp7jjos/croot/cryptography_1665612656373/work
+Django @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_cdse89o2w5/croots/recipe/django_1661292537238/work
 django-environ==0.9.0
 djangorestframework==3.14.0
 drf-yasg==1.21.4
-ez-setup==0.9
-greenlet==2.0.1
-idna==3.4
+greenlet @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_5b9h4voofy/croot/greenlet_1670513245570/work
+idna @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_771olrhiqw/croot/idna_1666125579282/work
 inflection==0.5.1
 itypes==1.2.0
-Jinja2==3.1.2
-MarkupSafe==2.1.1
-numpy==1.23.5
-packaging==22.0
+Jinja2 @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_9fjgzv9ant/croot/jinja2_1666908141308/work
+MarkupSafe @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_12c133f5-0720-4727-9c18-599a3af825723lzwham3/croots/recipe/markupsafe_1654597866058/work
+numexpr @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_98sxk8lloi/croot/numexpr_1668713874222/work
+numpy @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_8efwh7lkf0/croot/numpy_and_numpy_base_1668593730126/work
+packaging @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_952b3b8pj8/croot/packaging_1671697425767/work
 pandas==1.5.2
 peewee==3.15.4
 pycosat==0.6.3
-PyMySQL==1.0.2
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+PyMySQL @ file:///Users/ktietz/demo/mc3/conda-bld/pymysql_1629702202458/work
 PyNaver==0.0.9
-python-dateutil==2.8.2
-pytz==2022.6
-requests==2.28.1
-ruamel.yaml==0.17.21
-ruamel.yaml.clib==0.2.7
-six==1.16.0
+pyOpenSSL @ file:///opt/conda/conda-bld/pyopenssl_1643788558760/work
+PySocks @ file:///Users/ktietz/Code/oss/ci_pkgs/pysocks_1626781349491/work
+python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
+pytz @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_c56ru3yml9/croot/pytz_1671697451306/work
+pytz-deprecation-shim==0.1.0.post0
+requests @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_b15e28ca-768e-4951-b4c6-8a7476e43183hrjpnkg9/croots/recipe/requests_1657734638595/work
+ruamel.yaml @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_aeh5mqcw49/croot/ruamel.yaml_1666304555976/work
+ruamel.yaml.clib @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_f64xdg2rww/croot/ruamel.yaml.clib_1666302244208/work
+six @ file:///tmp/build/80754af9/six_1644875935023/work
 SQLAlchemy==1.4.45
-sqlparse==0.4.3
+sqlparse @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_73ubbfcjni/croot/sqlparse_1668793445223/work
+tzdata==2022.7
+tzlocal==4.2
 uritemplate==4.1.1
-urllib3==1.26.13
+urllib3 @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_e11ioy9zkf/croot/urllib3_1670526989300/work

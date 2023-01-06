@@ -7,7 +7,9 @@ from .models import *
 
 class SubjectSerializer(serializers.ModelSerializer):
     subject = serializers.CharField()
+    year = serializers.IntegerField()
+    month = serializers.IntegerField()
 
     class Meta:
         model = InputData
-        fields = ('subject',)
+        fields = ('year', 'month', 'subject')
